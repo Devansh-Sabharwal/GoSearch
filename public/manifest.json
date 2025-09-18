@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "GoSearch",
+  "description": "Type `go <shortcut>` to jump to websites.",
+  "version": "1.0",
+  "permissions": ["storage"],
+  "omnibox": { "keyword": "go" },  
+  "background": { "service_worker": "background.js" }
+}
