@@ -84,7 +84,11 @@ export default function App() {
         />
       )}
       <div className="py-4 border-white/10 flex justify-center items-center">
-        <span className="text-2xl font-semibold font-urbanist">GoSearch</span>
+        <span className="mr-1">
+          {/* <img src="/logo.png" className="w-20" /> */}
+          <img src="/image.png" className="w-14" />
+        </span>
+        <span className="text-3xl font-semibold font-urbanist">GoSearch</span>
       </div>
       <div className="px-6 py-4">
         <div className="flex justify-between items-center">

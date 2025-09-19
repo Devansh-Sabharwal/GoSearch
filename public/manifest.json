@@ -12,6 +12,11 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "GoSearch"
+    "default_title": "GoSearch",
+    "default_icon": {
+      "16": "image.png",
+      "32": "image.png"
+    }
   }
+
 }
