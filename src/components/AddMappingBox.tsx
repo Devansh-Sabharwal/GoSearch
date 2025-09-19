@@ -19,7 +19,12 @@ export default function AddMappingBox({
 
   const handleSubmit = () => {
     if (!shortcut.trim() || !url.trim()) return; // basic validation
-    onSubmit({ shortcut, url, description });
+
+    onSubmit({
+      shortcut: shortcut.trim(),
+      url: url.endsWith("/") ? url.slice(0, -1) : url,
+      description: description.trim(),
+    });
     onClose();
   };
 
@@ -35,7 +40,7 @@ export default function AddMappingBox({
             type="text"
             value={shortcut}
             onChange={(e) => setShortcut(e.target.value)}
-            className="w-full px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
+            className="w-full text-sm px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
             placeholder="e.g. lc"
           />
         </div>
@@ -47,7 +52,7 @@ export default function AddMappingBox({
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="w-full px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
+            className="w-full text-sm px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
             placeholder="https://leetcode.com"
           />
         </div>
@@ -59,7 +64,7 @@ export default function AddMappingBox({
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
+            className="w-full text-sm px-3 py-2 rounded-md bg-foreground border border-white/10 focus:outline-none focus:ring-0"
             placeholder="LeetCode platform"
           />
         </div>
@@ -68,13 +73,13 @@ export default function AddMappingBox({
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-700 transition"
+            className="px-4 py-2 text-sm rounded-md bg-gray-600 hover:bg-gray-700 transition"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-md bg-blue hover:bg-[#0faaaa] transition"
+            className="px-4 py-2 text-sm rounded-md bg-blue hover:bg-[#0faaaa] transition"
           >
             Add
           </button>

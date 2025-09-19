@@ -13,7 +13,6 @@ export default function App() {
   const [mappings, setMappings] = useState<Mapping[]>([]);
 
   useEffect(() => {
-    console.log("use effect called");
     getMappings().then((data) => setMappings(data));
   }, []);
 
@@ -89,7 +88,7 @@ export default function App() {
       </div>
       <div className="px-6 py-4">
         <div className="flex justify-between items-center">
-          <div className="relative w-52">
+          <div className="relative w-56">
             {/* Icon */}
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Search className="w-5 h-5 text-gray-400" />
@@ -112,41 +111,45 @@ export default function App() {
         </div>
         <div className="mt-8">
           {/* Mappings Table */}
-          <div className="bg-gray-800 rounded-xl shadow-lg border border-white/10 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-foreground">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Shortcut
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      URL
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Description
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-700">
-                  {filteredMappings.map((mapping) => (
-                    <Entry
-                      key={mapping.id}
-                      Mapping={mapping}
-                      isEditing={editingId === mapping.id}
-                      onEdit={() => setEditingId(mapping.id)}
-                      onSave={(updatedMapping) =>
-                        handleEditMapping(mapping.id, updatedMapping)
-                      }
-                      onCancel={() => setEditingId(null)}
-                      onDelete={() => handleDeleteMapping(mapping.id)}
-                    />
-                  ))}
-                </tbody>
-              </table>
+          <div className="bg-foreground rounded-xl shadow-lg border border-white/10">
+            <div className="custom-scrollbar overflow-x-auto">
+              {/* make THIS div control vertical height */}
+              <div className="max-h-[300px] custom-scrollbar overflow-y-auto">
+                <table className="w-full">
+                  <thead className="bg-background sticky top-0 z-10">
+                    <tr>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Shortcut
+                      </th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        URL
+                      </th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-3 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-700">
+                    {filteredMappings.map((mapping) => (
+                      <Entry
+                        key={mapping.id}
+                        Mapping={mapping}
+                        isEditing={editingId === mapping.id}
+                        onEdit={() => setEditingId(mapping.id)}
+                        onSave={(updatedMapping) => {
+                          handleEditMapping(mapping.id, updatedMapping);
+                          setEditingId(null);
+                        }}
+                        onCancel={() => setEditingId(null)}
+                        onDelete={() => handleDeleteMapping(mapping.id)}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

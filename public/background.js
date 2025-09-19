@@ -3,14 +3,24 @@ chrome.omnibox.onInputEntered.addListener((text) => {
     const mappings = res.mappings || [];
     const shortcut = text.trim();
     const [base, ...rest] = shortcut.split("/");
-    console.log(shortcut);
+    
     // find mapping by shortcut
     const mapping = mappings.find((m) => m.shortcut === base);
     if (mapping) {
-    console.log("mapping found")
-
+  
       const extraPath = rest.length > 0 ? "/" + rest.join("/") : "";
-      chrome.tabs.create({ url: mapping.url + extraPath });
+      // Ensure protocol
+      let finalUrl = mapping.url + extraPath;
+      if (!/^https?:\/\//i.test(finalUrl)) {
+        finalUrl = "https://" + finalUrl;
+      }
+
+      chrome.tabs.create({ url: finalUrl });
+      // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      //   if (tabs[0]?.id) {
+      //     chrome.tabs.update(tabs[0].id, { url: finalUrl });
+      //   }
+      // });
     } else {
       // fallback to Google search
       console.log("mapping not found")

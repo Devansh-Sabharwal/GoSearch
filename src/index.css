@@ -7,3 +7,7 @@
     --font-urbanist:"Urbanist","sans-serif";
     --font-geist: "Geist","sans-serif";
 }
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #3b3b3b transparent;
+}
