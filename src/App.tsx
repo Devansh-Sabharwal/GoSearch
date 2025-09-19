@@ -1,8 +1,89 @@
 import { Search } from "lucide-react";
-
+import { useEffect, useState } from "react";
+import Entry from "./components/Entry";
+import { getMappings } from "./utils/getMappings";
+import AddMappingBox from "./components/AddMappingBox";
+export interface Mapping {
+  id: string;
+  shortcut: string;
+  url: string;
+  description: string;
+}
 export default function App() {
+  const [mappings, setMappings] = useState<Mapping[]>([]);
+
+  useEffect(() => {
+    console.log("use effect called");
+    getMappings().then((data) => setMappings(data));
+  }, []);
+
+  useEffect(() => {
+    setFilteredMappings(mappings);
+  }, [mappings]);
+
+  const handleEditMapping = (
+    id: string,
+    editData: { shortcut: string; url: string; description: string }
+  ) => {
+    getMappings().then((current) => {
+      const updated = current.map((m) =>
+        m.id === id ? { ...m, ...editData } : m
+      );
+      //@ts-ignore
+      chrome.storage.sync.set({ mappings: updated }, () => {
+        setMappings(updated);
+      });
+    });
+  };
+  const handleDeleteMapping = (id: string) => {
+    getMappings().then((current) => {
+      const updated = current.filter((m) => m.id !== id);
+      //@ts-ignore
+      chrome.storage.sync.set({ mappings: updated }, () => {
+        setMappings(updated);
+      });
+    });
+  };
+  const handleFilter = (text: string) => {
+    setFilteredMappings(
+      mappings.filter(
+        (element) =>
+          element.shortcut.toLowerCase().includes(text.toLowerCase()) ||
+          element.url.toLowerCase().includes(text.toLowerCase())
+      )
+    );
+  };
+  const addMapping = (data: Mapping) => {
+    getMappings().then((current) => {
+      if (current.some((m) => m.shortcut === data.shortcut)) {
+        alert("Shortcut already exists!");
+        return;
+      }
+      const updated = [...current, data];
+      //@ts-ignore
+      chrome.storage.sync.set({ mappings: updated }, () => {
+        setMappings(updated);
+      });
+    });
+  };
+
+  const [showAddBox, setShowAddBox] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [filteredMappings, setFilteredMappings] = useState<Mapping[]>(mappings);
   return (
-    <div className="w-[600px] h-screen bg-background text-white font-geist">
+    <div className="w-[600px] min-h-[500px] bg-background text-white font-geist">
+      {showAddBox && (
+        <AddMappingBox
+          onClose={() => setShowAddBox(false)}
+          onSubmit={(data) => {
+            const newMapping: Mapping = {
+              id: crypto.randomUUID(),
+              ...data,
+            };
+            addMapping(newMapping); // the function we wrote earlier
+          }}
+        />
+      )}
       <div className="py-4 border-white/10 flex justify-center items-center">
         <span className="text-2xl font-semibold font-urbanist">GoSearch</span>
       </div>
@@ -16,12 +97,16 @@ export default function App() {
 
             {/* Input */}
             <input
+              onChange={(e) => handleFilter(e.target.value)}
               type="text"
               placeholder="Search shortcuts, URLs"
               className="w-full text-base placeholder:text-base focus:outline-none focus:ring-0 bg-foreground pl-10 pr-4 py-2 border border-white/10 rounded-md"
             />
           </div>
-          <span className="bg-blue px-4 py-2 text-base rounded-md cursor-pointer hover:scale-[1.02] active:scale-[0.98] hover:bg-[#0faaaa] transition-all duration-200">
+          <span
+            onClick={() => setShowAddBox(true)}
+            className="bg-blue px-4 py-2 text-base rounded-md cursor-pointer hover:scale-[1.02] active:scale-[0.98] hover:bg-[#0faaaa] transition-all duration-200"
+          >
             +<span className="ml-3">Add Mapping</span>
           </span>
         </div>
@@ -47,17 +132,19 @@ export default function App() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-700">
-                  {/* {filteredMappings.map((mapping) => (
-                  <MappingRow
-                    key={mapping.id}
-                    mapping={mapping}
-                    isEditing={editingId === mapping.id}
-                    onEdit={() => setEditingId(mapping.id)}
-                    onSave={(updatedMapping) => handleEditMapping(mapping.id, updatedMapping)}
-                    onCancel={() => setEditingId(null)}
-                    onDelete={() => handleDeleteMapping(mapping.id)}
-                  />
-                ))} */}
+                  {filteredMappings.map((mapping) => (
+                    <Entry
+                      key={mapping.id}
+                      Mapping={mapping}
+                      isEditing={editingId === mapping.id}
+                      onEdit={() => setEditingId(mapping.id)}
+                      onSave={(updatedMapping) =>
+                        handleEditMapping(mapping.id, updatedMapping)
+                      }
+                      onCancel={() => setEditingId(null)}
+                      onDelete={() => handleDeleteMapping(mapping.id)}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>

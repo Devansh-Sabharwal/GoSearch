@@ -1,12 +1,17 @@
 {
-  "manifest_version": 3,
   "name": "GoSearch",
-  "description": "Type `go <shortcut>` to jump to websites.",
+  "description": "Search with shortcuts",
   "version": "1.0",
-  "permissions": ["storage"],
-  "omnibox": { "keyword": "go" },  
-  "background": { "service_worker": "background.js" },
+  "manifest_version": 3,
+  "permissions": ["storage", "tabs"],
+  "omnibox": {
+    "keyword": "go"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
-    "default_popup": "index.html"
-   }
+    "default_popup": "index.html",
+    "default_title": "GoSearch"
+  }
 }
