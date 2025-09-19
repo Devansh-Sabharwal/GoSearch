@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+# GoSearch 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GoSearch is a lightweight Chrome extension that lets you create shortcuts for your favorite websites.
+Just type `go your-shortcut` in the address bar and you’ll be instantly redirected — no long URLs, no clutter.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔧 Setup & Installation
 
-## Expanding the ESLint configuration
+1. Clone this repository
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+   ```bash
+   git clone https://github.com/yourusername/gosearch.git
+   cd gosearch
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. Install dependencies
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   ```bash
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3. Build the extension
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+   ```bash
+   npm run build
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. Load the extension in your browser
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   - Open **chrome://extensions/** (or **brave://extensions/**).
+   - Enable **Developer mode** (top-right).
+   - Click **Load unpacked** and select the `dist/` folder created after the build.
+
+---
+
+## ✨ Features
+
+- Define your own shortcuts → `go yt` → YouTube opens 🎬
+- Works directly from the address bar (Omnibox).
+- Manage shortcuts with a clean popup UI (add, edit, delete).
+- Stores data securely in Chrome Sync Storage.
+
+---
+
+## 📌 Notes
+
+- The default keyword is `go` → type it in the address bar to trigger GoSearch.
+- Works best on Chromium-based browsers (Chrome, Brave, Edge).
